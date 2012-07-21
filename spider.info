@@ -1,0 +1,342 @@
+:julia
+Draws the Julia set for the current polynomial.  
+Stop the rendering with a click on the right
+mouse button. 
+#
+:new2
+Opens a window for defining a polynomial
+with one critical point of the form z^d + c. The
+data entered is one angle (or a repeating binary
+expansion) for the external ray to the critical
+value c.  
+#
+:new3
+Opens a window for defining a cubic
+polynomial of the form z^3 +Az + B. The data
+entered is two angles for the external rays to
+the critical value points.  
+#
+:mate
+Opens a window for defining mating of 
+two quadratic polynomials. This is not
+implemented... too bad.
+#
+:parameters
+Set various parameters.  
+#
+:xspid
+Define angles for an extra spider. This
+can be used to just see where external rays with
+given angles are.  
+#
+:mark
+Step through the legs of the spider in the order
+given by the action of multiplication by the degree
+of the polynomial. The angle of the leg is displayed
+in the Goings On window. 
+#
+:lift
+Iterate Thurston`s algorithms once.  The resulting
+C value is displayed in the 1/4 Theorem window. 
+#
+:manylift
+Iterate Thurston`s algorithms several times.  
+#
+:xlift
+Lift the extra spider. A few lifts should
+suffice to have the legs of the spider well
+approximate external rays.  
+#
+:quit
+Quit the program.  
+#
+:goingson
+Shows a window that contains what is happening...  
+#
+:ps
+When toggeled on, the output generated on the 
+screen will be spooled to a postscript file 
+called spider.ps. This is a very crude mechanism 
+for generating output, as screen erasures, etc. 
+are not outputed. So to make a nice picture, 
+make everything ready (that is, converge), hit 
+this button, and then press the buttons 
+correspondng to what you want in the image
+(LIFT, Julia Set, Etc.). Then untoggle the button
+and see the spider.ps file.
+#
+:help
+This is a help window.
+#
+:xspid_set_angles
+Pressing this button will set the shown rational 
+angle as the external angle of a let of an extra
+spider. Lifting the extra spider will cause the 
+leg (and its image under angle multiplication 
+(depending on the degree of the polynomial))
+to converge to an external angle of the Julia set. 
+#
+:xspid_numerator
+This is the numerator of the rational angle of 
+the first leg of an extra spider which can be 
+used to view external rays to the Julia set. 
+:xspid_denominator
+This is the numerator of the rational angle of 
+the first leg of an extra spider which can be 
+used to view external rays to the Julia set. 
+#
+:scale
+Adjust the scale of the drawn image.
+#
+:param_xcen
+Set the x position (in kluge screen coordinates) 
+of the center of the image. Scale converts between 
+screen coordinates and real coordinates.
+#
+:param_ycen
+Set the y position (in kluge screen coordinates) 
+of the center of the image. Scale converts between 
+screen coordinates and real coordinates.
+#
+:param_nlifts
+The number of lifts (or iterations of Thurston's
+algorithms) done by the NLifts button.
+#
+:param_depth
+A parameter controling the depth of the recursion
+in the Julia set drawing routine. The depth is 
+(something like, if not exactly) the derivative 
+of the iterations at which no more backwards 
+iterates are plotted. 
+#
+:param_weps
+The weeding distance. Points along the legs of 
+the spider which are closer than this distance
+are weeded away. Small values give nice external
+rays, and large values give rapid convergence. 
+#
+:param_feps
+The fill distance. Points along the legs of 
+the spider which are farther than this distance
+get new points filled in between. Small values 
+help convergence when for some reason things
+don't converge; but this has never really 
+happened anyway. Zero means, just don't bother. 
+By the way, gentle user, I think it is really 
+wonderful that you are bothering with this
+help text and all, so I think I will take
+this moment to thank you for playing with 
+my software. As I write this, I am feeling 
+lightheaded from hours of staring at a console, 
+and the idea that you, now, (well.. not THEN 
+now, but NOW now) are playing with my program
+is reassuring. 
+#
+:param_fur
+The upper fill radius. This is how far 
+legs (or rays, which are more or less the
+same at large radius) extend. 
+#
+:param_accept
+Accept the parameters as shown in the parameter
+setting window. Use CANCEL to reject the settings
+and reset them.
+#
+:param_cancel
+This is supposed to Cancel the parameters 
+changes made and reset them to their 
+previous values. Use ACCEPT to accept
+the values. But it doesn't do that.
+#
+:param_ticks
+Toggles whether tick marks are drawn on the spider
+legs at the points which define the legs.
+#
+:new2_set_angles
+Pressing this button causes the following:
+The d-ary expansion (where d = degree chosen) 
+is read, and then a rational angle is found
+with that expansion. A spider is then defined 
+based on that angle. The LIFT button can be 
+used to iterate Thurston's algorithm and make
+the spider converge to something. 
+#
+:new2_set_rb
+Pressing this button causes the following:
+The rational angle is read from the 
+numerator and denominator. A d-ary expansion
+is then displayed for that angle. A spider is 
+then defined based on that angle. The LIFT 
+button can be used to iterate Thurston's 
+algorithm and make the spider converge to 
+something. 
+#
+:new2_numerator
+This is the numerator for the angle used to 
+build a spider.  Hit the Set Repeating
+Expansion button to define the spider. 
+#
+:new2_denominator
+This is the denominator for a rational angle
+used to build a spider. Hit the Set Repeating
+Expansion button to define the spider. 
+#
+:new2_leading
+This is the leading part of the d-ary expansion
+of a rational angle used to define a spider. 
+The degree determines the "d" in "d-ary", and 
+"leading part" means the part before the 
+expansion begins repeating. Hit the Set 
+Angles button to define the spider. 
+#
+:new2_repeating
+This is the repeating part of the d-ary expansion
+of a rational angle used to define a spider. 
+The degree determines the "d" in "d-ary", and 
+"repeating part" means the part after the 
+leading part, i.e. when the expansion begins
+repeating.  Hit the Set Angles button to define 
+the spider. 
+#
+:new2_degree
+The degree d of a polynomial of the form
+z^d + c. 
+#
+:new2_sector
+This is the sector sequence of the forward orbit of 
+the rational angles under theta -> d theta. 
+The angles to the critical value define d sectors, 
+each with a lable. It is a fact that perdiodic 
+sector sequences with period smaller than the 
+period of the spider legs implies that the spider 
+legs with those angles land at the same point in 
+the Julia set. Try 9/56 for an example. 
+#
+:new2_potential
+The potential value (1-infinity) of the C value
+outside of the Mandelbrot set for the final 
+polynomial. 
+#
+:new3_set_angles
+Pressing this button sets the angles shown
+as the angles to the two critical points of 
+the cubic polynomial which will be the limit
+of iterating the algorithm. The Set 1/2 or 2/3
+buttons both have to be pressed to make this
+button active so that the spider can be defined. 
+#
+:new3_numerator1
+This is one numerator of an angle to the 
+first critical point of the cubic polynomial 
+which will be the limit of iterating the 
+algorithm. 
+#
+:new3_denominator1
+This is one denominator of an angle to the 
+first critical point of the cubic polynomial 
+which will be the limit of iterating the 
+algorithm. 
+#
+:new3_toggle_angle
+This button toggles the other angle to the 
+critical point, which has to be 1/3 or 2/3
+more than the first angle (if all that
+makes sense). 
+#
+:new3_other_angle1
+This is the other angle to the first
+critical point. It is set using the button above. 
+#
+:new3_numerator2
+This is one numerator of an angle to the 
+second critical point of the cubic polynomial 
+which will be the limit of iterating the 
+algorithm. 
+#
+:new3_denominator2
+This is one denominator of an angle to the 
+second critical point of the cubic polynomial 
+which will be the limit of iterating the 
+algorithm. 
+#
+:new3_other_angle2
+This is the other angle to the second 
+critical point. It is set using the button above. 
+#
+:new3_potential
+This is the potential, which may someday be 
+implemented. 
+#
+:new3_canvas
+This area shows a circle with two arcs, 
+corresponding to the two sets of two angles
+to the two critical points of the cubic
+polynomial the spider is defining. 
+Pressing the 1/3 or 2/3 buttons 
+toggles the second angle in each set
+and moves the arcs. The arcs should not
+intersect (meaning the angles are unlinked)
+for the spider to define a polynomial.
+#
+:k_button
+Put up a window which can draw parameter
+(Mandelbrot set) and dynamical plane (Julia
+sets) plots using the Koebe 1/4 theorem
+as in The Science of Fractal Images, 
+Appendix D. 
+In a sentence, the algorithm computes disks
+which are known to lie outside (or inside)
+of the set drawn and thus excludes computation
+for the other pixels in those disks. Also, pixels
+that are known to intersect the set are drawn in 
+black. 
+#
+:M_canvas
+The following mouse actions do something
+in this window.
+Right Button : select C or Z value.
+Left Button : Select first point for 
+              blow up zoom.
+Middle Button : Select second point
+                for blow up zoom.
+#
+:M_iterations
+The maximum number of iterations used
+to determine if a point escapes to 
+infinity.
+#
+:M_where
+The display is (x,y) s , which means:
+The position (x,y) of the center and 
+the radius s of the (always) square window. 
+#
+:M_ps_spool
+When toggeled on, the output generated on the 
+screen will be spooled to a postscript file 
+called spider1.ps. This is a very crude mechanism 
+for generating output, as screen erasures, etc. 
+are not outputed. So to make a nice picture, 
+make everything ready, hit 
+this button, and then press the buttons 
+correspondng to what you want in the image.
+Then untoggle the button
+and see the spider.ps file.
+#
+:M_type
+Selects between drawing in the parameter
+space (Mandelbrot set) and the dynamical space
+(Julia set). 
+Selecting a menu item will reset the drawing
+window and clear the screen. 
+#
+:M_color
+Toggles use of color in drawing the images. 
+The color is based on the number of iterations 
+used to escape to infinity.
+#
+:M_compute
+Compute the image. The image can be zoomed using
+the Left and Middle mouse buttons and hitting this
+key again. 
+#
+

@@ -1,0 +1,50 @@
+This directory includes souces and exectutable for a program
+which implements a version of what some people call Thurston's algorithm. 
+The program also contains an implementation (using code written
+largely by Marc Parmet) of the 1/4 theorem
+method of drawing parameter and dynamical space images, as
+in The Science of Fractal Images, appendix D.
+It also includes a version of a paper on the subject, based
+on my thesis. 
+
+
+The program is fully interactive, allowing specification of 
+angle(s), iteration of the algorithm until it converges (to a 
+polynomial), plotting of the Julia set for the polynomial, and 
+plotting of the spiders (and/or external rays of the Julia
+sets) which are the data set used in the algorithm. There is on
+line help (if your keyboard has a HELP button). There is a 
+brief step by step on line tutorial, also. 
+The program uses the XView toolkit, under X. 
+
+The program takes as input an angle (or set of angles) and
+gives as output a polynomial whose dynamics in the complex plane
+is determined by the dynamics of multiplication of the angle
+by the degree of the desired polynomial modulo 1. For example, 
+suppose we choose 1/6 as an angle and wish to find a quadratic
+polynomial (d = 2), then 
+1/6 -> d*1/6 = 2*1/6 = 1/3 -> 2*2*1/6 = 2/3 -> 2*2*2*1/6 
+= 4/3 (modulo 1) = 1/3. It is periodic of period 2 after 
+1 step. 
+
+Pressing the New 2 button, entering 1/6 as a fraction, and pressing
+the Set Repeating Expansion Button, will set up the algorithm. Pressing
+LIFT or Many Lifts will iterate the algorithm; The Goings On window will
+show the C value of the polynomial z^d + C, which will converge to 
+C = i = sqrt(-1). The main window will show some lines, which also
+converge to something... p(z) = z^2 + i has the property that 
+the critical value i has the same dynamics as 1/6, 
+i -> p(i)  = 1-i -> p(i-1) = -i -> p(-i) = 1-i. That is, it is perdiodic
+of period two after one step. 
+
+
+
+Yuval Fisher
+
+November 17, 1992
+
+Institute for Non-Linear Science 0402
+University of California, San Diego
+La Jolla, CA 92093
+
+e-mail:yfisher@ucsd.edu
