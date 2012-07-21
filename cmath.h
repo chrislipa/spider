@@ -1,3 +1,6 @@
+#ifndef CMATH_H
+#define CMATH_H
+
 
 #define CADD(B,A)		{(B).x += (A).x; (B).y += (A).y;  				 }
 #define CSUM(C,A,B)		{(C).x = (A).x + (B).x; (C).y = (A).y + (B).y;   }
@@ -27,3 +30,6 @@ complex comp_exp();
 complex comp_log();
 complex new_abs();
 complex new_arg();
+
+
+#endif

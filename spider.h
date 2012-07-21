@@ -78,4 +78,5 @@ struct mader /* a mated spider */ {
 	/* the data type is, interestingly, almost identical to a spider*/
 	};
 	
+extern struct spider   sp, sp1;
 

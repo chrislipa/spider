@@ -6,6 +6,8 @@
 //char *realloc();
 /* void free(); */
 
+#define PIX_SRC 0
+
 #define SV 1
 #define SIMPLE_M	0
 #define SIMPLE_J	1

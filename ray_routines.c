@@ -18,16 +18,16 @@ char 					strng[300];
 extern FILE				*output;
 
 /* XView Globals */
-extern Pixwin 			*pw;
-extern Textsw			textsw;
-extern Frame 			frame;
+//extern Pixwin 			*pw;
+//extern Textsw			textsw;
+//extern Frame 			frame;
 extern int 				HilightedRay, XCen, YCen;
 extern int 				ps_spooling;
 
 
 
-int		PenMode = PIX_SRC;
-int		PenSize = 1;
+//int		PenMode = PIX_SRC;
+//int		PenSize = 1;
 
 
 /*=========================== polar ==============================*/

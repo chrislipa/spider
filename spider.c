@@ -64,7 +64,7 @@ int				XCen = 350, YCen=400;
 int			 	scale= 180,
 				Nlifts = 10, 
 				showticks = 0;
-				HilightedRay = -1, 
+extern int				HilightedRay = -1,
 				new3_button_invalid_flag = 0;
 
 complex 		A = {0.0,  0.0},

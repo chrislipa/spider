@@ -52,6 +52,7 @@
 		3606918C15BB429700479D95 /* misc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = misc.h; sourceTree = "<group>"; };
 		3606918D15BB429700479D95 /* modal_quad_routines.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = modal_quad_routines.c; sourceTree = "<group>"; };
 		3606918E15BB429700479D95 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		360691A115BB702F00479D95 /* cubix.windows.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cubix.windows.h; sourceTree = "<group>"; };
 		36D40E3715BB420B001890B0 /* spider.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spider.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36D40E3B15BB420B001890B0 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		36D40E3E15BB420B001890B0 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -102,6 +103,7 @@
 				3606918415BB429700479D95 /* ray_routines.c */,
 				3606918515BB429700479D95 /* cmath.h */,
 				3606918615BB429700479D95 /* cubix.windows.c */,
+				360691A115BB702F00479D95 /* cubix.windows.h */,
 				3606918715BB429700479D95 /* julia_routines.c */,
 				3606918815BB429700479D95 /* k_driver.c */,
 				3606918915BB429700479D95 /* k_iterate.c */,

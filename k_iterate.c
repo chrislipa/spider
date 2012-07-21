@@ -1,9 +1,9 @@
 #include "koebe.h"
-
+#include <stdlib.h> 
 extern gptr gp;
 extern int width, iterations;
 
-void newton(), calc_dfdc();
+static void newton(), calc_dfdc();
 extern void (*line_to_routine)();
 extern complex C;
 
@@ -700,12 +700,7 @@ step_kqt(gp)
 	return 0;
 }
 
-static void
-newton(x0,p,presult,c)
-	complex *x0;
-	int p;
-	complex *presult,*c;
-{
+static void newton(complex* x0,int p,complex* presult,complex* c) {
 	int i,j;
 	register double f_x,f_y;
 	register double dfdz_x,dfdz_y;
@@ -870,8 +865,7 @@ resize(pleft,ptop,pright)
 			*c++ = 255;
 }
 
-gptr
-create_gstruct()
+gptr create_gstruct()
 {
 	gptr gp;
 	int i,j;

@@ -17,6 +17,7 @@ extern double 			julia_depth;
 extern FILE				*output;
 
 /*XView variables */
+/*
 extern Cursor 	cursor, wait_cursor;
 extern Canvas	canvas;
 extern Frame    frame;
@@ -25,13 +26,14 @@ extern Pixwin 	*pw;
 Event			event;
 Inputmask		im;
 Fullscreen 		fs;
+ */
 
 /*julia set  variables */
 short Jfinished;
 
 extern int PenMode;
 
-StackSpace() /* kluge for now */
+int StackSpace() /* kluge for now */
 {
 return(100000);
 }
@@ -119,14 +121,14 @@ complex z; double deriv;
 
 	
 	/* xv_input_readevent(canvas_paint_window(canvas), &event, 0,0,&im); */
-	xv_input_readevent(frame, &event, 0,0,&im);
-	if (event_is_button(&event)) Jfinished = TRUE;
+//	xv_input_readevent(frame, &event, 0,0,&im);
+//	if (event_is_button(&event)) Jfinished = TRUE;
 
  /* notify_dispatch();  */
 
 	scx = xwindow(z.x);
  	scy = ywindow(z.y);
-	cline(scx, scy,scx+1,scy);
+//	cline(scx, scy,scx+1,scy);
 
 	w = z;
 	CSUB(w, C);
@@ -161,12 +163,12 @@ complex z; double deriv;
 	complex 		z1, z2, z3, BB;
 	double 			temp_deriv;
 
-	xv_input_readevent(frame, &event, 0,0,&im);
-	if (event_is_button(&event)) Jfinished = TRUE;
+//	xv_input_readevent(frame, &event, 0,0,&im);
+//	if (event_is_button(&event)) Jfinished = TRUE;
 
 	scx = xwindow(z.x);
  	scy = ywindow(z.y);
-	cline(scx, scy,scx+1,scy);
+//	cline(scx, scy,scx+1,scy);
 
 	CDIFF(BB, B, z);
 	cubic_roots(A,BB, &z1, &z2, &z3);
@@ -250,9 +252,9 @@ void DoJulia1()
 	complex  		z, A1, z2, z3, BB;
 	int				i;
 	
-	xv_set(frame,WIN_CURSOR,wait_cursor, 0);
-	fs = xv_create(frame, FULLSCREEN, WIN_CONSUME_EVENTS, WIN_MOUSE_BUTTONS,
-					0,0);
+//	xv_set(frame,WIN_CURSOR,wait_cursor, 0);
+//	fs = xv_create(frame, FULLSCREEN, WIN_CONSUME_EVENTS, WIN_MOUSE_BUTTONS,
+//					0,0);
 		
 	/* find a repelling fixed point */
 	z = A;
@@ -263,12 +265,12 @@ void DoJulia1()
 	CDIFF(BB, B, z);
 	cubic_roots(A,BB, &z2, &z, &z3); /* now avoid the fixed point */
 
-	my_clear_event(event);
+//	my_clear_event(event);
 	Jfinished= FALSE;
-	xv_set(canvas_paint_window(canvas),WIN_CURSOR,wait_cursor, 0);
+//	xv_set(canvas_paint_window(canvas),WIN_CURSOR,wait_cursor, 0);
 	InverseImage1(z,1.0);
-	xv_set(canvas_paint_window(canvas),WIN_CURSOR,cursor, 0);
-	xv_destroy(fs);
+//	xv_set(canvas_paint_window(canvas),WIN_CURSOR,cursor, 0);
+//	xv_destroy(fs);
 }
 
 /*------------------------------ DoJulia ----------------------------------*/
@@ -280,14 +282,14 @@ void DoJulia()
 	complex  		z;
 		
 	
-	xv_set(frame,WIN_CURSOR,wait_cursor, 0);
-	fs = xv_create(frame, FULLSCREEN, WIN_CONSUME_EVENTS, WIN_MOUSE_BUTTONS,
-					0,0);
-	my_clear_event(event);
+//	xv_set(frame,WIN_CURSOR,wait_cursor, 0);
+//	fs = xv_create(frame, FULLSCREEN, WIN_CONSUME_EVENTS, WIN_MOUSE_BUTTONS,
+//					0,0);
+//	my_clear_event(event);
 	Jfinished= FALSE;
 	z = repelling_fx_pt();
 	InverseImage(z,1.0);
-	xv_set(canvas_paint_window(canvas),WIN_CURSOR,cursor, 0);
-	xv_destroy(fs);
+//	xv_set(canvas_paint_window(canvas),WIN_CURSOR,cursor, 0);
+//	xv_destroy(fs);
 }
 

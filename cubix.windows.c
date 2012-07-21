@@ -5,7 +5,10 @@
 	window functions for cubix
 	
 *********************************************************************/
-#include "cubix.windows.c"
+#include "cubix.windows.h"
+#include "spider.h"
+
+#include "cmath.h"
 //
 //
 //#include <QuickDraw.h>
@@ -25,11 +28,11 @@
 //#include <math.h>
 //#endif
 
-#include "windows.h"
+//#include "windows.h"
 
-WindowRecord			Ghost_wRec, Cspace_wRec, Actual_wRec, Goingson_wRec;
-extern 	WindowPtr	 	Ghost_Window, Cspace_Window, Actual_Window, Goingson_Window;
-extern 	struct spider    sp, sp1;
+//WindowRecord			Ghost_wRec, Cspace_wRec, Actual_wRec, Goingson_wRec;
+//extern 	WindowPtr	 	Ghost_Window, Cspace_Window, Actual_Window, Goingson_Window;
+
 extern 	long 			den, num, d;
 extern	long 			den1, den2, num11, num12, num21, num22;
 extern  long 			xden,xnum;
@@ -39,180 +42,183 @@ extern 	int				scale, XCen, YCen, showticks;
 extern	char 			strng[80];
 extern 	double			depth;
 					
-extern GrafPtr		 	ActualPtr;
-GrafPort	     		ActualPort;
+//extern GrafPtr		 	ActualPtr;
+//GrafPort	     		ActualPort;
 	   
-extern ControlHandle vScroll, radScroll;
-ControlHandle		 but[NUM_BUTTONS];
-extern TEHandle 	 TEH;
+//extern ControlHandle vScroll, radScroll;
+//ControlHandle		 but[NUM_BUTTONS];
+//extern TEHandle 	 TEH;
 extern char			 dirty;
 
-Str255 				 theFileName;
+
 extern int			 linesInFolder, radius;
 
-extern Cursor 		waitCursor;
+//extern Cursor 		waitCursor;
 
 int					Nlifts = 10, HilightedRay = -1;
 ;
-Pattern				**greypat, **blackpat;
+//Pattern				**greypat, **blackpat;
 
-PicHandle			QuadraticLocus, CubicLocus, QuarticLocus;
+//PicHandle			QuadraticLocus, CubicLocus, QuarticLocus;
 
 long Str_to_Int();
 float Str_to_Float();
 
 
-void disp(str)
-char *str;
+//void disp(char* str) {
+//    
+//}
+////char *str;
+//{
+////	int i, l;
+////	l = strlen(str);
+////	for (i=0; i<l; ++i) 
+////		if (str[i] == '\n') str[i] = 13;
+////		
+////	TEInsert( str, (long)l,TEH );
+////	ShowSelect();
+//	
+//}
+
+
+int SetUpWindows()
 {
-	int i, l;
-	l = strlen(str);
-	for (i=0; i<l; ++i) 
-		if (str[i] == '\n') str[i] = 13;
-		
-	TEInsert( str, (long)l,TEH );
-	ShowSelect();
-	
-}
-
-
-SetUpWindows()
-{
-	Rect	destRect, viewRect;
-	Rect	vScrollRect;
-	FontInfo	myInfo;
-	int		height, cont_h, cont_v,i;
-	
-	Actual_Window = GetNewWindow( 129, &Actual_wRec, -1L );
-	Cspace_Window = GetNewWindow( 131, &Cspace_wRec, -1L );
-	QuadraticLocus = (PicHandle)GetResource('PICT', 1000);
-	CubicLocus     = (PicHandle)GetResource('PICT', 1001);
-	QuarticLocus   = (PicHandle)GetResource('PICT', 1002);
-	SetWindowPic(Cspace_Window, QuadraticLocus);
-	Ghost_Window =  GetNewWindow( 130, &Ghost_wRec, -1L );
-
-	for (i=0; i< NUM_BUTTONS; ++i) {
-		but[i]    = GetNewControl( 1001+i, Ghost_Window);
-	}
-	
-	cont_h = 2;
-	cont_v = 5;
-	for (i=0; i<NUM_BUTTONS; ++i, cont_h += /*BUTTON_WIDTH*/(*but[i-1])->contrlRect.right-(*but[i-1])->contrlRect.left+2) 
-		MoveControl(but[i], cont_h, cont_v);
-
-	ActualPtr = &ActualPort;
-	
-	
-	SetPort((Goingson_Window = GetNewWindow( windowID, &Goingson_wRec, -1L )));
-	TextFont(4);
-	TextSize(9);
-	vScrollRect = (*Goingson_Window).portRect;
-	vScrollRect.left = vScrollRect.right-15;
-	vScrollRect.right += 1;
-	vScrollRect.bottom -= 14;
-	vScrollRect.top -= 1;
-	vScroll = NewControl( Goingson_Window, &vScrollRect, "\p", 1, 0, 0, 0,
-		scrollBarProc, 0L);
-
-	viewRect = thePort->portRect;
-	viewRect.right -= SBarWidth;
-	viewRect.bottom -= SBarWidth;
-	InsetRect(&viewRect, 4, 4);
-	TEH = TENew( &viewRect, &viewRect );
-	
-	blackpat = (Pattern **)GetPattern(1000);
-	greypat  = (Pattern **)GetPattern(1001);
-	
-	HiliteControl (but[XLIFT_BUT],255); /* disable x lift button initially */
-	
-	SetView(thePort);
-	SelectWindow(Ghost_Window);
-	HiliteWindow(Goingson_Window,1);
-	dirty = 0;
+//    /*
+//	Rect	destRect, viewRect;
+//	Rect	vScrollRect;
+//	FontInfo	myInfo;
+//	int		height, cont_h, cont_v,i;
+//	/*
+//	Actual_Window = GetNewWindow( 129, &Actual_wRec, -1L );
+//	Cspace_Window = GetNewWindow( 131, &Cspace_wRec, -1L );
+//	QuadraticLocus = (PicHandle)GetResource('PICT', 1000);
+//	CubicLocus     = (PicHandle)GetResource('PICT', 1001);
+//	QuarticLocus   = (PicHandle)GetResource('PICT', 1002);
+//	SetWindowPic(Cspace_Window, QuadraticLocus);
+//	Ghost_Window =  GetNewWindow( 130, &Ghost_wRec, -1L );
+//*/
+//	for (i=0; i< NUM_BUTTONS; ++i) {
+//		but[i]    = GetNewControl( 1001+i, Ghost_Window);
+//	}
+//	
+//	cont_h = 2;
+//	cont_v = 5;
+//	for (i=0; i<NUM_BUTTONS; ++i, cont_h += /*BUTTON_WIDTH*/(*but[i-1])->contrlRect.right-(*but[i-1])->contrlRect.left+2) 
+//		MoveControl(but[i], cont_h, cont_v);
+//
+//	ActualPtr = &ActualPort;
+//	
+//	
+//	SetPort((Goingson_Window = GetNewWindow( windowID, &Goingson_wRec, -1L )));
+//	TextFont(4);
+//	TextSize(9);
+//	vScrollRect = (*Goingson_Window).portRect;
+//	vScrollRect.left = vScrollRect.right-15;
+//	vScrollRect.right += 1;
+//	vScrollRect.bottom -= 14;
+//	vScrollRect.top -= 1;
+//	vScroll = NewControl( Goingson_Window, &vScrollRect, "\p", 1, 0, 0, 0,
+//		scrollBarProc, 0L);
+//
+//	viewRect = thePort->portRect;
+//	viewRect.right -= SBarWidth;
+//	viewRect.bottom -= SBarWidth;
+//	InsetRect(&viewRect, 4, 4);
+//	TEH = TENew( &viewRect, &viewRect );
+//	
+//	blackpat = (Pattern **)GetPattern(1000);
+//	greypat  = (Pattern **)GetPattern(1001);
+//	
+//	HiliteControl (but[XLIFT_BUT],255); /* disable x lift button initially */
+//	
+//	SetView(thePort);
+//	SelectWindow(Ghost_Window);
+//	HiliteWindow(Goingson_Window,1);
+//	dirty = 0;
 }
 
 
 AdjustText ()
 
 {
-	int		oldScroll, newScroll, delta;
-	
-	oldScroll = (**TEH).viewRect.top - (**TEH).destRect.top;
-	newScroll = GetCtlValue(vScroll) * (**TEH).lineHeight;
-	delta = oldScroll - newScroll;
-	if (delta != 0)
-	  TEScroll(0, delta, TEH);
+//	int		oldScroll, newScroll, delta;
+//	
+//	oldScroll = (**TEH).viewRect.top - (**TEH).destRect.top;
+//	newScroll = GetCtlValue(vScroll) * (**TEH).lineHeight;
+//	delta = oldScroll - newScroll;
+//	if (delta != 0)
+//	  TEScroll(0, delta, TEH);
 }
 
 
 SetVScroll()
 {
-	register int	n;
-	
-	n = (**TEH).nLines-linesInFolder;
-
-	if ((**TEH).teLength > 0 && (*((**TEH).hText))[(**TEH).teLength-1]=='\r')
-		n++;
-
-	SetCtlMax(vScroll, n > 0 ? n : 0);
+//	register int	n;
+//	
+//	n = (**TEH).nLines-linesInFolder;
+//
+//	if ((**TEH).teLength > 0 && (*((**TEH).hText))[(**TEH).teLength-1]=='\r')
+//		n++;
+//
+//	SetCtlMax(vScroll, n > 0 ? n : 0);
 }
 
-ShowSelect()
+void ShowSelect()
 
 {
-	register	int		topLine, bottomLine, theLine;
-	
-	SetVScroll();
-	AdjustText();
-	
-	topLine = GetCtlValue(vScroll);
-	bottomLine = topLine + linesInFolder;
-	
-	if ((**TEH).selStart < (**TEH).lineStarts[topLine] ||
-			(**TEH).selStart >= (**TEH).lineStarts[bottomLine]) {
-		for (theLine = 0; (**TEH).selStart >= (**TEH).lineStarts[theLine]; theLine++)
-			;
-		SetCtlValue(vScroll, theLine - linesInFolder / 2);
-		AdjustText();
-	}
+//	register	int		topLine, bottomLine, theLine;
+//	
+//	SetVScroll();
+//	AdjustText();
+//	
+//	topLine = GetCtlValue(vScroll);
+//	bottomLine = topLine + linesInFolder;
+//	
+//	if ((**TEH).selStart < (**TEH).lineStarts[topLine] ||
+//			(**TEH).selStart >= (**TEH).lineStarts[bottomLine]) {
+//		for (theLine = 0; (**TEH).selStart >= (**TEH).lineStarts[theLine]; theLine++)
+//			;
+//		SetCtlValue(vScroll, theLine - linesInFolder / 2);
+//		AdjustText();
+//	}
 }
 
-SetView(w)
-WindowPtr w;
+void SetView(w)
+//WindowPtr w;
 {
-	(**TEH).viewRect = w->portRect;
-	(**TEH).viewRect.right -= SBarWidth;
-	(**TEH).viewRect.bottom -= SBarWidth;
-	InsetRect(&(**TEH).viewRect, 4, 4);
-	linesInFolder = ((**TEH).viewRect.bottom-(**TEH).viewRect.top)/(**TEH).lineHeight;
-	(**TEH).viewRect.bottom = (**TEH).viewRect.top + (**TEH).lineHeight*linesInFolder;
-	(**TEH).destRect.right = (**TEH).viewRect.right;
-	TECalText(TEH);
+//	(**TEH).viewRect = w->portRect;
+//	(**TEH).viewRect.right -= SBarWidth;
+//	(**TEH).viewRect.bottom -= SBarWidth;
+//	InsetRect(&(**TEH).viewRect, 4, 4);
+//	linesInFolder = ((**TEH).viewRect.bottom-(**TEH).viewRect.top)/(**TEH).lineHeight;
+//	(**TEH).viewRect.bottom = (**TEH).viewRect.top + (**TEH).lineHeight*linesInFolder;
+//	(**TEH).destRect.right = (**TEH).viewRect.right;
+//	TECalText(TEH);
 }
 
-UpdateWindow(theWindow)
-WindowPtr	theWindow;
+void UpdateWindow(theWindow)
+//WindowPtr	theWindow;
 {
-	GrafPtr	savePort;
-	Rect 	rct;
+//	GrafPtr	savePort;
+//	Rect 	rct;
 	char	str[255];
 	
-	GetPort( &savePort );
+//	GetPort( &savePort );
 
 	SetPort( theWindow );
 /*	CopyRgn(((WindowPeek)theWindow)->contRgn,((WindowPeek)theWindow)->updateRgn); */
 	BeginUpdate( theWindow );
 
 
-	if (theWindow == Goingson_Window) {
-		EraseRect(&theWindow->portRect);
-		DrawControls( theWindow );
-		DrawGrowIcon( theWindow );
-		TEUpdate( &theWindow->portRect, TEH );
-	} 
-	else if (theWindow == Ghost_Window) { 
-		DrawControls( theWindow );
-	}
+//	if (theWindow == Goingson_Window) {
+//		EraseRect(&theWindow->portRect);
+//		DrawControls( theWindow );
+//		DrawGrowIcon( theWindow );
+//		TEUpdate( &theWindow->portRect, TEH );
+//	} 
+//	else if (theWindow == Ghost_Window) { 
+//		DrawControls( theWindow );
+//	}
 	
 	/*	else if (theWindow == DomainWindow) 
 		CopyBits(&DomainBitmap, &(theWindow->portBits), &DomainBitmap.bounds, 
@@ -240,186 +246,186 @@ WindowPtr	theWindow;
 		DrawControls( theWindow );
 	}
 */	
-	EndUpdate( theWindow );
-	
-	if (theWindow == Cspace_Window) {
-		SetPort(Cspace_Window);
-		if (d == 2) {
-			MoveTo((int)(256.0*(C.x+2.0)/2.5), 256 - (int)(256.0*(C.y+1.25)/2.5));
-			Line(4,0); Line(-8,0); Line(4,0);
-			Line(0,4); Line(0,-8); Line(0,4);
-		} else if (d==3 ||  d == 4) {
-			MoveTo((int)(256.0*(C.x+1.644)/3.15), 256 - (int)(256.0*(C.y+1.58)/3.15));
-			Line(4,0); Line(-8,0); Line(4,0);
-			Line(0,4); Line(0,-8); Line(0,4);
-		}
-	}
-
-
-
-	SetPort( savePort );
+//	EndUpdate( theWindow );
+//	
+//	if (theWindow == Cspace_Window) {
+//		SetPort(Cspace_Window);
+//		if (d == 2) {
+//			MoveTo((int)(256.0*(C.x+2.0)/2.5), 256 - (int)(256.0*(C.y+1.25)/2.5));
+//			Line(4,0); Line(-8,0); Line(4,0);
+//			Line(0,4); Line(0,-8); Line(0,4);
+//		} else if (d==3 ||  d == 4) {
+//			MoveTo((int)(256.0*(C.x+1.644)/3.15), 256 - (int)(256.0*(C.y+1.58)/3.15));
+//			Line(4,0); Line(-8,0); Line(4,0);
+//			Line(0,4); Line(0,-8); Line(0,4);
+//		}
+//	}
+//
+//
+//
+//	SetPort( savePort );
 }
 
 
 
 
-pascal void ScrollProc(theControl, theCode)
-ControlHandle	theControl;
+void ScrollProc(/*theControl,*/ theCode)
+//ControlHandle	theControl;
 int				theCode;
 {
-	int	pageSize;
-	int	scrollAmt;
-	
-	if (theCode == 0)
-		return ;
-	
-	pageSize = ((**TEH).viewRect.bottom-(**TEH).viewRect.top) / 
-			(**TEH).lineHeight - 1;
-			
-	switch (theCode) {
-		case inUpButton: 
-			scrollAmt = -1;
-			break;
-		case inDownButton: 
-			scrollAmt = 1;
-			break;
-		case inPageUp: 
-			scrollAmt = -pageSize;
-			break;
-		case inPageDown: 
-			scrollAmt = pageSize;
-			break;
-		}
-	SetCtlValue( theControl, GetCtlValue(theControl)+scrollAmt );
-	AdjustText();
+//	int	pageSize;
+//	int	scrollAmt;
+//	
+//	if (theCode == 0)
+//		return ;
+//	
+//	pageSize = ((**TEH).viewRect.bottom-(**TEH).viewRect.top) / 
+//			(**TEH).lineHeight - 1;
+//			
+//	switch (theCode) {
+//		case inUpButton: 
+//			scrollAmt = -1;
+//			break;
+//		case inDownButton: 
+//			scrollAmt = 1;
+//			break;
+//		case inPageUp: 
+//			scrollAmt = -pageSize;
+//			break;
+//		case inPageDown: 
+//			scrollAmt = pageSize;
+//			break;
+//		}
+//	SetCtlValue( theControl, GetCtlValue(theControl)+scrollAmt );
+//	AdjustText();
 
 }
 
 /* ===================================== SetParams ============================*/
-SetParams()
+void SetParams()
 {
 	int  			itemHit, i, typ;
-	Handle			textItem;
-	DialogPtr		param_window;
-	DialogRecord	param_DRecord;
-	Rect			box;
-	Str255			eps_str, scale_str, depth_str, str;
-
-	param_window = GetNewDialog(1002, &param_DRecord, -1L);
-	SetPort(param_window);
-
-		
-	
-	
-	Float_to_Str(wepsilon, eps_str);
-	GetDItem(param_window, 3, &typ, &textItem, &box);
-	SetIText(textItem, eps_str);
-	
-	Float_to_Str(fepsilon, eps_str);
-	GetDItem(param_window, 4, &typ, &textItem, &box);
-	SetIText(textItem, eps_str);
-	
-	Float_to_Str(furad, eps_str);
-	GetDItem(param_window, 5, &typ, &textItem, &box);
-	SetIText(textItem, eps_str);
-	
-	
-	
-	Int_to_Str((long)Nlifts, scale_str);
-	GetDItem(param_window, 6, &typ, &textItem, &box);
-	SetIText(textItem, scale_str);
-	
-	Int_to_Str((long)scale, scale_str);
-	GetDItem(param_window, 7, &typ, &textItem, &box);
-	SetIText(textItem, scale_str);
-	Int_to_Str((long)XCen, scale_str);
-	GetDItem(param_window, 8, &typ, &textItem, &box);
-	SetIText(textItem, scale_str);
-	Int_to_Str((long)YCen, scale_str);
-	GetDItem(param_window, 9, &typ, &textItem, &box);
-	SetIText(textItem, scale_str);
-	
-	Float_to_Str(depth, depth_str);
-	GetDItem(param_window, 10, &typ, &textItem, &box);
-	SetIText(textItem, depth_str);
-
-	GetDItem(param_window, 11, &typ, &textItem, &box);
-	SetCtlValue(textItem, showticks);
-
-	do {
-		ModalDialog(0L, &itemHit);
-	
-		if (itemHit == 11) {
-			GetDItem(param_window, 11, &typ, &textItem, &box);
-			showticks = !GetCtlValue(textItem);
-			SetCtlValue(textItem, showticks);
-		}
-	
-	} while (itemHit !=1 && itemHit !=2);
-	        	
-	if (itemHit == 2) {
-	 	CloseDialog(param_window);
-		return;
-	}
-	if (itemHit == 1) {
-			GetDItem(param_window, 3, &typ, &textItem, &box);
-	     	GetIText(textItem, eps_str);
-	        wepsilon = Str_to_Float(eps_str);
-	
-			GetDItem(param_window, 4, &typ, &textItem, &box);
-	     	GetIText(textItem, eps_str);
-	        fepsilon = Str_to_Float(eps_str);
-	
-			GetDItem(param_window, 5, &typ, &textItem, &box);
-	     	GetIText(textItem, eps_str);
-	        furad = Str_to_Float(eps_str);
-	
-			GetDItem(param_window, 6, &typ, &textItem, &box);
-	     	GetIText(textItem, scale_str);
-	        Nlifts = Str_to_Int(scale_str);
-
-			GetDItem(param_window, 7, &typ, &textItem, &box);
-	     	GetIText(textItem, scale_str);
-	        scale = Str_to_Int(scale_str);
-
-			GetDItem(param_window, 8, &typ, &textItem, &box);
-	     	GetIText(textItem, scale_str);
-	        XCen = Str_to_Int(scale_str);
-
-			GetDItem(param_window, 9, &typ, &textItem, &box);
-	     	GetIText(textItem, scale_str);
-	        YCen = Str_to_Int(scale_str);
-
-			GetDItem(param_window, 10, &typ, &textItem, &box);
-	     	GetIText(textItem, depth_str);
-	        depth = Str_to_Float(depth_str);
-	}
-	 	CloseDialog(param_window);
-	sprintf(strng, "\nwepsilon = %f, scale = %d", wepsilon, scale);
-	disp(strng);
-} 
+//	Handle			textItem;
+//	DialogPtr		param_window;
+//	DialogRecord	param_DRecord;
+//	Rect			box;
+//	NSString			*eps_str, scale_str, depth_str, str;
+//
+//	param_window = GetNewDialog(1002, &param_DRecord, -1L);
+//	SetPort(param_window);
+//
+//		
+//	
+//	
+//	Float_to_Str(wepsilon, eps_str);
+//	GetDItem(param_window, 3, &typ, &textItem, &box);
+//	SetIText(textItem, eps_str);
+//	
+//	Float_to_Str(fepsilon, eps_str);
+//	GetDItem(param_window, 4, &typ, &textItem, &box);
+//	SetIText(textItem, eps_str);
+//	
+//	Float_to_Str(furad, eps_str);
+//	GetDItem(param_window, 5, &typ, &textItem, &box);
+//	SetIText(textItem, eps_str);
+//	
+//	
+//	
+//	Int_to_Str((long)Nlifts, scale_str);
+//	GetDItem(param_window, 6, &typ, &textItem, &box);
+//	SetIText(textItem, scale_str);
+//	
+//	Int_to_Str((long)scale, scale_str);
+//	GetDItem(param_window, 7, &typ, &textItem, &box);
+//	SetIText(textItem, scale_str);
+//	Int_to_Str((long)XCen, scale_str);
+//	GetDItem(param_window, 8, &typ, &textItem, &box);
+//	SetIText(textItem, scale_str);
+//	Int_to_Str((long)YCen, scale_str);
+//	GetDItem(param_window, 9, &typ, &textItem, &box);
+//	SetIText(textItem, scale_str);
+//	
+//	Float_to_Str(depth, depth_str);
+//	GetDItem(param_window, 10, &typ, &textItem, &box);
+//	SetIText(textItem, depth_str);
+//
+//	GetDItem(param_window, 11, &typ, &textItem, &box);
+//	SetCtlValue(textItem, showticks);
+//
+//	do {
+//		ModalDialog(0L, &itemHit);
+//	
+//		if (itemHit == 11) {
+//			GetDItem(param_window, 11, &typ, &textItem, &box);
+//			showticks = !GetCtlValue(textItem);
+//			SetCtlValue(textItem, showticks);
+//		}
+//	
+//	} while (itemHit !=1 && itemHit !=2);
+//	        	
+//	if (itemHit == 2) {
+//	 	CloseDialog(param_window);
+//		return;
+//	}
+//	if (itemHit == 1) {
+//			GetDItem(param_window, 3, &typ, &textItem, &box);
+//	     	GetIText(textItem, eps_str);
+//	        wepsilon = Str_to_Float(eps_str);
+//	
+//			GetDItem(param_window, 4, &typ, &textItem, &box);
+//	     	GetIText(textItem, eps_str);
+//	        fepsilon = Str_to_Float(eps_str);
+//	
+//			GetDItem(param_window, 5, &typ, &textItem, &box);
+//	     	GetIText(textItem, eps_str);
+//	        furad = Str_to_Float(eps_str);
+//	
+//			GetDItem(param_window, 6, &typ, &textItem, &box);
+//	     	GetIText(textItem, scale_str);
+//	        Nlifts = Str_to_Int(scale_str);
+//
+//			GetDItem(param_window, 7, &typ, &textItem, &box);
+//	     	GetIText(textItem, scale_str);
+//	        scale = Str_to_Int(scale_str);
+//
+//			GetDItem(param_window, 8, &typ, &textItem, &box);
+//	     	GetIText(textItem, scale_str);
+//	        XCen = Str_to_Int(scale_str);
+//
+//			GetDItem(param_window, 9, &typ, &textItem, &box);
+//	     	GetIText(textItem, scale_str);
+//	        YCen = Str_to_Int(scale_str);
+//
+//			GetDItem(param_window, 10, &typ, &textItem, &box);
+//	     	GetIText(textItem, depth_str);
+//	        depth = Str_to_Float(depth_str);
+//	}
+//	 	CloseDialog(param_window);
+//	sprintf(strng, "\nwepsilon = %f, scale = %d", wepsilon, scale);
+//	disp(strng);
+}
 
 /* ==============================dispABC ====================================*/
 /* display the values of AB and C (as appropriate in the goings on window */
 void dispABC()
 {
 		
-		SetPort(Cspace_Window);
+//		SetPort(Cspace_Window);
 		if (sp.Num_Crit_Pts ==1)  {
 			if (C.y < 0.0) 
 				sprintf(strng, "\nC = %lf - i %lf\n", C.x, -C.y);
 			else
 				sprintf(strng, "\nC = %lf + i %lf\n", C.x, C.y);
-			disp(strng);
+//			disp(strng);
 
 			if (d == 2) {
-				MoveTo((int)(256.0*(C.x+2.0)/2.5), 256 - (int)(256.0*(C.y+1.25)/2.5));
-				Line(4,0); Line(-8,0); Line(4,0);
-				Line(0,4); Line(0,-8); Line(0,4);
+//				MoveTo((int)(256.0*(C.x+2.0)/2.5), 256 - (int)(256.0*(C.y+1.25)/2.5));
+//				Line(4,0); Line(-8,0); Line(4,0);
+//				Line(0,4); Line(0,-8); Line(0,4);
 			} else if (d == 3) {
-				MoveTo((int)(256.0*(C.x+1.644)/3.15), 256 - (int)(256.0*(C.y+1.58)/3.15));
-				Line(4,0); Line(-8,0); Line(4,0);
-				Line(0,4); Line(0,-8); Line(0,4);
+//				MoveTo((int)(256.0*(C.x+1.644)/3.15), 256 - (int)(256.0*(C.y+1.58)/3.15));
+//				Line(4,0); Line(-8,0); Line(4,0);
+//				Line(0,4); Line(0,-8); Line(0,4);
 			}
 			
 		} else {
@@ -427,13 +433,13 @@ void dispABC()
 				sprintf(strng, "\n\nA = %lf - i %lf", A.x, -A.y);
 			else
 				sprintf(strng, "\n\nA = %lf + i %lf", A.x, A.y);
-			disp(strng);
+//			disp(strng);
 			
 			if (B.y < 0.0) 
 				sprintf(strng, "\nB = %lf - i %lf\n", B.x, -B.y);
 			else
 				sprintf(strng, "\nB = %lf + i %lf\n", B.x, B.y);
-			disp(strng);
+//			disp(strng);
 		}
 
 }
@@ -736,39 +742,39 @@ EventRecord	*theEvent;
 }
 
 
-MyGrowWindow( w, p )
-WindowPtr w;
-Point p;
+void MyGrowWindow( w, p )
+//WindowPtr w;
+//Point p;
 {
-	GrafPtr	savePort;
-	long	theResult;
-	int		oScroll;
-	Rect 	r, oView;
-	
-	GetPort( &savePort );
-	SetPort( w );
-
-	SetRect(&r, 80, 80, screenBits.bounds.right, screenBits.bounds.bottom);
-	theResult = GrowWindow( w, p, &r );
-	if (theResult == 0)
-	  return;
-	SizeWindow( w, LoWord(theResult), HiWord(theResult), 1);
-
-	InvalRect(&w->portRect);
-	oView = (**TEH).viewRect;
-	oScroll = GetCtlValue(vScroll);
-	
-	SetView(w);
-	HidePen();
-	MoveControl(vScroll, w->portRect.right - SBarWidth, w->portRect.top-1);
-	SizeControl(vScroll, SBarWidth+1, w->portRect.bottom - w->portRect.top-(SBarWidth-2));
-	ShowPen();
-
-
-	SetVScroll();
-	AdjustText();
-	
-	SetPort( savePort );
+//	GrafPtr	savePort;
+//	long	theResult;
+//	int		oScroll;
+//	Rect 	r, oView;
+//	
+//	GetPort( &savePort );
+//	SetPort( w );
+//
+//	SetRect(&r, 80, 80, screenBits.bounds.right, screenBits.bounds.bottom);
+//	theResult = GrowWindow( w, p, &r );
+//	if (theResult == 0)
+//	  return;
+//	SizeWindow( w, LoWord(theResult), HiWord(theResult), 1);
+//
+//	InvalRect(&w->portRect);
+//	oView = (**TEH).viewRect;
+//	oScroll = GetCtlValue(vScroll);
+//	
+//	SetView(w);
+//	HidePen();
+//	MoveControl(vScroll, w->portRect.right - SBarWidth, w->portRect.top-1);
+//	SizeControl(vScroll, SBarWidth+1, w->portRect.bottom - w->portRect.top-(SBarWidth-2));
+//	ShowPen();
+//
+//
+//	SetVScroll();
+//	AdjustText();
+//	
+//	SetPort( savePort );
 }
 
 
